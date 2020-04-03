@@ -1,0 +1,6 @@
+.vagrant/*
+*.log
+**/syntaxcache
+**/trusted_certs
+**.deb
+**client.pem

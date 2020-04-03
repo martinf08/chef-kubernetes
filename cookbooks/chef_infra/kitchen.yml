@@ -1,0 +1,23 @@
+---
+driver:
+  name: vagrant
+  synced_folders:
+    - ["./files", "/vagrant"]
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: ubuntu-18.04
+
+suites:
+  - name: server
+    run_list:
+      - recipe[chef_infra::server]
+    verifier:
+      inspec_tests:
+        - test/integration/server
+    attributes:
