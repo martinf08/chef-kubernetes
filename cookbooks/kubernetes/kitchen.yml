@@ -2,7 +2,7 @@
 driver:
   name: vagrant
   synced_folders:
-    - [".", "/vagrant"]
+    - [".", "/vagrant", "create: true, type: :virtualbox"]
 
 provisioner:
   name: chef_zero
@@ -25,9 +25,11 @@ suites:
     run_list:
       - recipe[kubernetes::default]
       - recipe[kubernetes::docker]
-      - recipe[kubernetes::master]
+      - recipe[kubernetes::kube_common]
+      - recipe[kubernetes::kube_master]
     verifier:
       inspec_tests:
         - test/integration/default
-        - test/integration/master
+        - test/integration/kube_common
+        - test/integration/kube_master
     attributes:

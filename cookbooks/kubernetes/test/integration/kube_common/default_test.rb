@@ -1,0 +1,1 @@
+control 'kube_common_test'

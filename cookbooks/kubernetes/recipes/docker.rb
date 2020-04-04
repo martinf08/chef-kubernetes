@@ -22,6 +22,8 @@ end
 
 apt_update 'update' do
   action :update
+
+  not_if { node['packages'].keys.include? "docker-ce" }
 end
 
 package %w(docker-ce docker-ce-cli containerd.io)
