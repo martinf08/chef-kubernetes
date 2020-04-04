@@ -2,7 +2,7 @@
 driver:
   name: vagrant
   synced_folders:
-    - ["./files", "/vagrant"]
+    - [".", "/vagrant"]
 
 provisioner:
   name: chef_zero
@@ -16,6 +16,7 @@ platforms:
 suites:
   - name: server
     run_list:
+      - recipe[chef_infra::default]
       - recipe[chef_infra::server]
     verifier:
       inspec_tests:

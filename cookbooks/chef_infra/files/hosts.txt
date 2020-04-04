@@ -1,3 +1,4 @@
 192.168.50.10   chef-server
 192.168.50.30   kube-master
+192.168.50.40   kube-node
 192.168.50.20   chef-workstation

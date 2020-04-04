@@ -1,0 +1,33 @@
+---
+driver:
+  name: vagrant
+  synced_folders:
+    - [".", "/vagrant"]
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: ubuntu-18.04
+    driver:
+      box: ubuntu/bionic64
+    server_wait: 30
+
+suites:
+  - name: master
+    driver:
+      customize:
+        memory: 2048
+        cpus: 2
+    run_list:
+      - recipe[kubernetes::default]
+      - recipe[kubernetes::docker]
+      - recipe[kubernetes::master]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+        - test/integration/master
+    attributes:

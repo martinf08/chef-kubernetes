@@ -4,7 +4,7 @@ VmsModule.write_host_file
 
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
-  config.vagrant.plugins = %w(vagrant-vbguest vagrant-hostsupdater)
+  #config.vagrant.plugins = %w(vagrant-vbguest vagrant-hostsupdater)
 
   VmsModule.get_instances.each do |instance|
 
@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
           chef.arguments = "--chef-license accept"
 
           chef.add_recipe "recipe[chef_infra::default]"
-            chef.add_recipe "recipe[chef_infra::server]"
+          chef.add_recipe "recipe[chef_infra::server]"
         end
 
       end
@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
 
       end
 
-      if instance.type == VirtualMachine::TYPE_KUBE_MASTER
+      if instance.type == VirtualMachine::TYPE_KUBE_MASTER || instance.type == VirtualMachine::TYPE_KUBE_NODE
 
         current.vm.provision "chef_solo" do |chef|
           chef.arguments = "--chef-license accept"

@@ -7,7 +7,7 @@ module VmsModule
   VMS = [
       {
           name: 'chef-server',
-          image_name: 'bento/ubuntu-18.04',
+          image_name: 'ubuntu/bionic64',
           ip: '192.168.50.10',
           cpu: 2,
           mem: 2048,
@@ -16,15 +16,23 @@ module VmsModule
       },
       {
           name: 'kube-master',
-          image_name: 'bento/ubuntu-18.04',
+          image_name: 'ubuntu/bionic64',
           ip: '192.168.50.30',
           cpu: 2,
           mem: 2048,
           type: VirtualMachine::TYPE_KUBE_MASTER
       },
       {
+          name: 'kube-node',
+          image_name: 'ubuntu/bionic64',
+          ip: '192.168.50.40',
+          cpu: 1,
+          mem: 1024,
+          type: VirtualMachine::TYPE_KUBE_NODE
+      },
+      {
           name: 'chef-workstation',
-          image_name: 'bento/debian-10',
+          image_name: 'ubuntu/bionic64',
           ip: '192.168.50.20',
           cpu: 1,
           mem: 1024,
