@@ -22,6 +22,8 @@ suites:
       customize:
         memory: 2048
         cpus: 2
+      network:
+        - ["private_network", {ip: "192.168.60.10"}]
     run_list:
       - recipe[kubernetes::default]
       - recipe[kubernetes::docker]
@@ -32,4 +34,20 @@ suites:
         - test/integration/default
         - test/integration/kube_common
         - test/integration/kube_master
+    attributes:
+  - name: node
+    driver:
+      customize:
+        memory: 1024
+        cpus: 1
+      network:
+        - ["private_network", {ip: "192.168.60.20"}]
+    run_list:
+      - recipe[kubernetes::default]
+      - recipe[kubernetes::docker]
+      - recipe[kubernetes::kube_common]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+        - test/integration/kube_common
     attributes:

@@ -26,6 +26,7 @@ bash "Configure Workstation" do
     knife ssl fetch
     knife ssl check
     knife cookbook upload chef_infra --cookbook-path cookbooks
+    knife cookbook upload kubernetes --cookbook-path cookbooks
     knife bootstrap "kube-master" -U 'vagrant' -P 'vagrant' --run-list 'recipe[chef_infra::default]' --sudo --use-sudo-password -N kube-master --ssh-verify-host-key 'never'
     knife bootstrap "kube-node" -U 'vagrant' -P 'vagrant' --run-list 'recipe[chef_infra::default]' --sudo --use-sudo-password -N kube-node --ssh-verify-host-key 'never'
   EOH
