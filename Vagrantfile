@@ -14,6 +14,11 @@ Vagrant.configure("2") do |config|
         current.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
       end
 
+      current.vm.provider "virtualbox" do |vb|
+        vb.cpus = instance.cpu
+        vb.memory = instance.mem
+      end
+
       current.vm.box = instance.image_name
       current.vm.hostname = instance.name
       current.vm.network 'private_network', ip: "#{instance.ip}"

@@ -1,15 +1,20 @@
+directory "/vagrant/cookbooks/kubernetes/files/" do
+  mode '0755'
+  recursive true
+  action :create
+end
+
 ruby_block "Kubeadm init" do
   block do
     Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-    command = "sudo kubeadm init --apiserver-advertise-address=#{node["network"]["interfaces"]["eth1"]} --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all"
+    command = "sudo kubeadm init --apiserver-advertise-address=192.168.50.30 --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all"
     command_out = shell_out(command)
-    node.default['token'] = command_out.stdout
 
     # Join command
-    node.default['token'] = node.default['token'].scan(/kubeadm join .* | --discovery-token-ca-cert-hash .*/i)
-    node.default['token'] = 'sudo ' + node.default['token'].map(&:strip).join(' ') + ' --ignore-preflight-errors=all'
+    join = command_out.stdout.scan(/kubeadm join .* | --discovery-token-ca-cert-hash .*/i)
+    join = 'sudo ' + join.map(&:strip).join(' ') + ' --ignore-preflight-errors=all'
 
-    IO.write("/vagrant/test.txt",  node.default['token'])
+    IO.write('/vagrant/cookbooks/kubernetes/files/join_command.txt',  join)
   end
   action :create
 

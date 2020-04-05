@@ -4,3 +4,5 @@
 **/trusted_certs
 **.deb
 **client.pem
+**join_command.txt
+**hosts.txt

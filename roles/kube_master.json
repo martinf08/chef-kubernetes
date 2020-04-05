@@ -1,0 +1,23 @@
+{
+  "name": "kube_master",
+  "description": "Kubernetes master",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "chef_client": {
+      "interval": 60,
+      "splay": 60
+    }
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[chef-client::default]",
+    "recipe[chef-client::delete_validation]",
+    "recipe[kubernetes::docker]",
+    "recipe[kubernetes::kube_common]",
+    "recipe[kubernetes::kube_master]"
+  ],
+  "env_run_lists": {
+  }
+}

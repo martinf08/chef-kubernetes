@@ -2,10 +2,11 @@
 driver:
   name: vagrant
   synced_folders:
-    - [".", "/vagrant", "create: true, type: :virtualbox"]
+    - ["../../", "/vagrant", "create: true, type: :virtualbox"]
 
 provisioner:
   name: chef_zero
+  log_level: :info
 
 verifier:
   name: inspec
@@ -23,9 +24,8 @@ suites:
         memory: 2048
         cpus: 2
       network:
-        - ["private_network", {ip: "192.168.60.10"}]
+        - ["private_network", {ip: "192.168.50.30"}]
     run_list:
-      - recipe[kubernetes::default]
       - recipe[kubernetes::docker]
       - recipe[kubernetes::kube_common]
       - recipe[kubernetes::kube_master]
@@ -41,11 +41,11 @@ suites:
         memory: 1024
         cpus: 1
       network:
-        - ["private_network", {ip: "192.168.60.20"}]
+        - ["private_network", {ip: "192.168.50.40"}]
     run_list:
-      - recipe[kubernetes::default]
       - recipe[kubernetes::docker]
       - recipe[kubernetes::kube_common]
+      - recipe[kubernetes::kube_node]
     verifier:
       inspec_tests:
         - test/integration/default

@@ -2,7 +2,7 @@ apt_package 'curl'
 
 WORKSTATION_PACKAGE = 'chefdk_4.7.73-1_amd64.deb'
 
-directory = '/vagrant'
+directory = '/tmp'
 unless Dir.exist? directory
   directory = '/tmp'
 end
@@ -19,15 +19,37 @@ dpkg_package WORKSTATION_PACKAGE do
   action :install
 end
 
+# bash 'Waiting server' do
+#   code <<-EOH
+#   RUNNING=$(curl -kLIs https://chef-server | grep HTTP | awk '{print $2}')
+#   until [ $RUNNING = 200 ]; do
+#   	echo $RUNNING
+#   	sleep 5
+#   	RUNNING=$(curl -kLIs https://chef-server | grep HTTP | awk '{print $2}')
+#   done
+#   EOH
+# end
+
 bash "Configure Workstation" do
   code <<-EOH
     cd /vagrant
     chef env --chef-license=accept
     knife ssl fetch
     knife ssl check
+
+    berks install
+    berks upload --no-ssl-verify
+
     knife cookbook upload chef_infra --cookbook-path cookbooks
     knife cookbook upload kubernetes --cookbook-path cookbooks
-    knife bootstrap "kube-master" -U 'vagrant' -P 'vagrant' --run-list 'recipe[chef_infra::default]' --sudo --use-sudo-password -N kube-master --ssh-verify-host-key 'never'
-    knife bootstrap "kube-node" -U 'vagrant' -P 'vagrant' --run-list 'recipe[chef_infra::default]' --sudo --use-sudo-password -N kube-node --ssh-verify-host-key 'never'
+
+    knife role from file roles/kube_master.json
+    knife role from file roles/kube_node.json
+
+    knife bootstrap "kube-master" -U 'vagrant' -P 'vagrant' --run-list 'role[kube_master]' --sudo --use-sudo-password -N kube-master --ssh-verify-host-key 'never'
+    knife bootstrap "kube-node" -U 'vagrant' -P 'vagrant' --run-list 'role[kube_node]' --sudo --use-sudo-password -N kube-node --ssh-verify-host-key 'never'
+
+    knife node run_list set kube-master 'role[kube_master]'
+    knife node run_list set kube-node 'role[kube_node]'
   EOH
 end
