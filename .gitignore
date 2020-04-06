@@ -4,5 +4,4 @@
 **/trusted_certs
 **.deb
 **client.pem
-**join_command.txt
-**hosts.txt
+.chef/chef_guid

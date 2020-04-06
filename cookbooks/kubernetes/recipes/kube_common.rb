@@ -12,7 +12,7 @@ apt_update 'Update repository' do
   not_if { node['packages'].keys.include? "kubeadm" }
 end
 
-apt_package 'kubeadm' do
+apt_package %w(kubeadm sshpass) do
   action :install
 end
 

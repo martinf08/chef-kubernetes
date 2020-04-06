@@ -1,8 +1,8 @@
 ---
 driver:
   name: vagrant
-  synced_folders:
-    - ["../../", "/vagrant", "create: true, type: :virtualbox"]
+#  synced_folders:
+#    - ["../../", "/vagrant", "create: true, type: :virtualbox"]
 
 provisioner:
   name: chef_zero
@@ -43,6 +43,7 @@ suites:
       network:
         - ["private_network", {ip: "192.168.50.40"}]
     run_list:
+
       - recipe[kubernetes::docker]
       - recipe[kubernetes::kube_common]
       - recipe[kubernetes::kube_node]

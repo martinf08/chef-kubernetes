@@ -10,18 +10,16 @@ directory directory_path do
   action :create
 end
 
-
-hosts_list = directory_path + '/hosts.txt'
-hosts = "\n" + IO.read('/etc/hosts')
+hosts = IO.read('/etc/hosts')
 
 file "/etc/hosts" do
-  content IO.read(hosts_list).concat(hosts)
+  content hosts.concat(JSON.parse(node[:hosts]).join(''))
   only_if { IO.readlines('/etc/hosts').grep(/(192.168.50)/).empty? }
 end
 
 bash 'Allow ssh' do
   code <<-EOH
-    sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/g' /etc/ssh/sshd_config
+    sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/g' /etc/ssh/sshd_config
   EOH
 end
 

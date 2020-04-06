@@ -19,16 +19,9 @@ dpkg_package WORKSTATION_PACKAGE do
   action :install
 end
 
-# bash 'Waiting server' do
-#   code <<-EOH
-#   RUNNING=$(curl -kLIs https://chef-server | grep HTTP | awk '{print $2}')
-#   until [ $RUNNING = 200 ]; do
-#   	echo $RUNNING
-#   	sleep 5
-#   	RUNNING=$(curl -kLIs https://chef-server | grep HTTP | awk '{print $2}')
-#   done
-#   EOH
-# end
+apt_package 'sshpass' do
+  action :install
+end
 
 bash "Configure Workstation" do
   code <<-EOH
@@ -51,5 +44,13 @@ bash "Configure Workstation" do
 
     knife node run_list set kube-master 'role[kube_master]'
     knife node run_list set kube-node 'role[kube_node]'
+  EOH
+end
+
+bash 'Download Kubernetes configuration' do
+  code <<-EOH
+    mkdir -p /home/vagrant/.kube
+    sshpass -p "vagrant" rsync -arv -e 'ssh -o StrictHostKeyChecking=no' vagrant@kube-master:/home/vagrant/.kube/config /home/vagrant/.kube/config
+    sudo chown vagrant:vagrant /home/vagrant/.kube/config
   EOH
 end

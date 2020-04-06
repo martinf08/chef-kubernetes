@@ -14,7 +14,7 @@ ruby_block "Kubeadm init" do
     join = command_out.stdout.scan(/kubeadm join .* | --discovery-token-ca-cert-hash .*/i)
     join = 'sudo ' + join.map(&:strip).join(' ') + ' --ignore-preflight-errors=all'
 
-    IO.write('/vagrant/cookbooks/kubernetes/files/join_command.txt',  join)
+    IO.write('/home/vagrant/join_command.txt',  join)
   end
   action :create
 
@@ -34,3 +34,4 @@ bash 'Deploy pod network' do
     sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
   EOH
 end
+

@@ -1,5 +1,6 @@
 bash 'Join kube_node' do
   code <<-EOH
-    sh /vagrant/cookbooks/kubernetes/files/join_command.txt
+    sshpass -p "vagrant" rsync -arv -e 'ssh -o StrictHostKeyChecking=no' vagrant@192.168.50.30:/home/vagrant/join_command.txt /home/vagrant/join_command.txt
+    sh /home/vagrant/join_command.txt
   EOH
 end

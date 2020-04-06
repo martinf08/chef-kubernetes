@@ -27,6 +27,10 @@ Vagrant.configure("2") do |config|
       current.vm.provision "chef_solo" do |chef|
         chef.arguments = "--chef-license accept"
 
+        chef.json = {
+            :hosts => VmsModule::get_host_bag
+        }
+
         case instance.type
         when VirtualMachine::TYPE_CHEF_SERVER
           chef.add_recipe "recipe[chef_infra::default]"

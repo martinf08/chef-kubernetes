@@ -42,8 +42,8 @@ module VmsModule
   ]
 
   def self.get_instances
-    vms = []
 
+    vms = []
     VMS.each do |attributes|
       vms << VirtualMachine.new(attributes)
     end
@@ -62,6 +62,16 @@ module VmsModule
       end
 
     end
+  end
+
+  def self.get_host_bag
+
+    attr = []
+    VMS.each do |attributes|
+      attr << attributes[:ip] + "   " + attributes[:name] + "\n"
+    end
+
+    attr.to_json
   end
 
 end
