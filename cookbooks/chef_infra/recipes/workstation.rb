@@ -1,13 +1,9 @@
-apt_package 'curl'
-
-WORKSTATION_PACKAGE = 'chefdk_4.7.73-1_amd64.deb'
-
-directory = '/tmp'
-unless Dir.exist? directory
-  directory = '/tmp'
+apt_package %w(curl sshpass) do
+  action :install
 end
 
-FILE = "#{directory}/#{WORKSTATION_PACKAGE}"
+WORKSTATION_PACKAGE = 'chefdk_4.7.73-1_amd64.deb'
+FILE = "/tmp/#{WORKSTATION_PACKAGE}"
 
 remote_file FILE do
   source "https://packages.chef.io/files/stable/chefdk/4.7.73/debian/9/#{WORKSTATION_PACKAGE}"
@@ -16,10 +12,6 @@ end
 
 dpkg_package WORKSTATION_PACKAGE do
   source FILE
-  action :install
-end
-
-apt_package 'sshpass' do
   action :install
 end
 

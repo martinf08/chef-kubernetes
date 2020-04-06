@@ -1,13 +1,7 @@
 apt_package 'curl'
 
 SERVER_PACKAGE = 'chef-server-core_13.1.13-1_amd64.deb'
-
-directory = '/vagrant'
-unless Dir.exist? directory
-  directory = '/tmp'
-end
-
-FILE = "#{directory}/#{SERVER_PACKAGE}"
+FILE = "/tmp/#{SERVER_PACKAGE}"
 
 remote_file FILE do
   source "https://packages.chef.io/files/stable/chef-server/13.1.13/ubuntu/18.04/#{SERVER_PACKAGE}"

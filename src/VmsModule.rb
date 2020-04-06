@@ -2,8 +2,6 @@ require_relative 'VirtualMachine'
 
 module VmsModule
 
-  FILE_DIR = './cookbooks/chef_infra/files'
-
   VMS = [
       {
           name: 'chef-server',
@@ -42,7 +40,6 @@ module VmsModule
   ]
 
   def self.get_instances
-
     vms = []
     VMS.each do |attributes|
       vms << VirtualMachine.new(attributes)
@@ -51,21 +48,7 @@ module VmsModule
     vms
   end
 
-  def self.write_host_file
-
-    Dir.mkdir(FILE_DIR) unless File.exists?(FILE_DIR)
-
-    File.open(FILE_DIR + '/hosts.txt', 'w') do |file|
-
-      VMS.each do |attributes|
-        file.write(attributes[:ip] + "   " + attributes[:name] + "\n")
-      end
-
-    end
-  end
-
   def self.get_host_bag
-
     attr = []
     VMS.each do |attributes|
       attr << attributes[:ip] + "   " + attributes[:name] + "\n"
