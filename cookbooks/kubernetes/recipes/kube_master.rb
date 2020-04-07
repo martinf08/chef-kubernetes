@@ -7,7 +7,7 @@ end
 ruby_block "Kubeadm init" do
   block do
     Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-    command = "sudo kubeadm init --apiserver-advertise-address=192.168.50.30 --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all"
+    command = "sudo kubeadm init --apiserver-advertise-address=192.168.50.30 --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors=all"
     command_out = shell_out(command)
 
     # Join command
@@ -31,7 +31,6 @@ end
 
 bash 'Deploy pod network' do
   code <<-EOH
-    sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+    sudo kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
   EOH
 end
-
