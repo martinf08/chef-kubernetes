@@ -3,15 +3,7 @@ apt_update 'update' do
   action :periodic
 end
 
-directory_path =  '/vagrant/cookbooks/chef_infra/files'
-directory directory_path do
-  mode '0755'
-  recursive true
-  action :create
-end
-
 hosts = IO.read('/etc/hosts')
-
 file "/etc/hosts" do
   content hosts.concat(JSON.parse(node[:hosts]).join(''))
   only_if { IO.readlines('/etc/hosts').grep(/(192.168.50)/).empty? }

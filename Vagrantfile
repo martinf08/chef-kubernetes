@@ -21,7 +21,6 @@ Vagrant.configure("2") do |config|
       current.vm.hostname = instance.name
       current.vm.network 'private_network', ip: "#{instance.ip}"
 
-
       current.vm.provision "chef_solo" do |chef|
         chef.arguments = "--chef-license accept"
 
