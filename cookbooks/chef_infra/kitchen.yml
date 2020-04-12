@@ -12,6 +12,8 @@ verifier:
 
 platforms:
   - name: ubuntu-18.04
+    driver:
+      box: ubuntu/bionic64
 
 suites:
   - name: server
@@ -22,3 +24,9 @@ suites:
       inspec_tests:
         - test/integration/server
     attributes:
+  - name: terraform
+    run_list:
+      - recipe[chef_infra::terraform]
+    verifier:
+      inspec_tests:
+        - test/integration/terraform
