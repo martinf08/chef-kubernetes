@@ -44,3 +44,11 @@ user: chef-workstation
 password: adminadmin
 
 ![chef-server](https://user-images.githubusercontent.com/39262279/78641371-7246ab80-78b1-11ea-92a2-360c157e6574.png)
+
+### Terraform
+<pre>
+cd /vagrant/terraform
+terraform apply -auto-approve
+</pre>
+
+![terraform](https://user-images.githubusercontent.com/39262279/79097911-3011e400-7d61-11ea-8fa1-ed6eec143927.png)
