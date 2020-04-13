@@ -3,12 +3,14 @@ require_relative 'src/VmsModule'
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
   config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vbguest.auto_update = false
 
   VmsModule.get_instances.each do |instance|
 
     config.vm.define instance.name do |current|
 
       if instance.need_synced_folder?
+        current.vbguest.auto_update = true
         current.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
       end
 
@@ -35,6 +37,7 @@ Vagrant.configure("2") do |config|
 
         when VirtualMachine::TYPE_CHEF_WORKSTATION
           chef.add_recipe "recipe[chef_infra::default]"
+          chef.add_recipe "recipe[chef_infra::terraform]"
           chef.add_recipe "recipe[chef_infra::workstation]"
           chef.add_recipe "recipe[kubernetes::workstation]"
           chef.custom_config_path = "./.chef/knife.rb"

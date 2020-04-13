@@ -1,7 +1,10 @@
-.vagrant/*
+.vagrant
 *.log
 **/syntaxcache
 **/trusted_certs
 **.deb
 **client.pem
 .chef/chef_guid
+**.tfstate
+**.tfstate.backup
+.terraform
