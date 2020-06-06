@@ -48,6 +48,7 @@ password: adminadmin
 ### Terraform
 <pre>
 cd /vagrant/terraform
+terraform init
 terraform apply -auto-approve
 </pre>
 
